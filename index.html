@@ -1,502 +1,399 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>A2: Corporate Landlords & Evictions in Boston</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A2: Exploratory Analysis – Disha</title>
   <style>
-    :root {
-      --ink: #1a1410;
-      --paper: #f7f3ee;
-      --rule: #c8b89a;
-      --red: #cb181d;
-      --blue: #2171b5;
-      --accent: #8b4513;
-      --light-rule: #e8dfd4;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: var(--paper);
-      color: var(--ink);
-      font-family: 'Source Serif 4', serif;
-      font-weight: 300;
-      line-height: 1.75;
-      font-size: 1.05rem;
+      font-family: Georgia, serif;
+      font-size: 16px;
+      line-height: 1.7;
+      color: #222;
+      background: #fff;
     }
 
-    /* ── MASTHEAD ── */
-    .masthead {
-      border-bottom: 3px double var(--rule);
-      padding: 2.5rem 0 1.5rem;
-      text-align: center;
-      background: var(--paper);
+    /* ── SITE HEADER & TABS ── */
+    .site-header {
+      padding: 1.5rem 2rem 0;
+      border-bottom: 1px solid #ccc;
     }
-    .masthead .kicker {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.5rem;
+    .site-header h1 {
+      font-size: 1.1rem;
+      font-weight: normal;
+      color: #444;
+      margin-bottom: 1rem;
     }
-    .masthead h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2rem, 5vw, 3.4rem);
-      font-weight: 700;
-      line-height: 1.15;
-      max-width: 820px;
-      margin: 0 auto 0.6rem;
+    nav.tabs {
+      display: flex;
     }
-    .masthead .deck {
-      font-family: 'Source Serif 4', serif;
-      font-style: italic;
-      font-size: 1.15rem;
-      color: #5a4a3a;
-      max-width: 640px;
-      margin: 0 auto 1.2rem;
+    nav.tabs a {
+      display: block;
+      padding: 0.55rem 1.25rem;
+      text-decoration: none;
+      font-family: Arial, sans-serif;
+      font-size: 0.9rem;
+      color: #555;
+      border: 1px solid #ccc;
+      border-bottom: none;
+      background: #f5f5f5;
+      margin-right: 3px;
+      border-radius: 4px 4px 0 0;
     }
-    .masthead .byline {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--rule);
-      border-top: 1px solid var(--rule);
-      display: inline-block;
-      padding-top: 0.5rem;
-      margin-top: 0.3rem;
+    nav.tabs a.active {
+      background: #fff;
+      color: #000;
+      font-weight: bold;
+      border-bottom: 1px solid #fff;
+      margin-bottom: -1px;
+      z-index: 1;
+      position: relative;
+    }
+    nav.tabs a.disabled {
+      color: #aaa;
+      cursor: default;
+      pointer-events: none;
     }
 
-    /* ── LAYOUT ── */
-    .container {
+    /* ── MAIN CONTENT ── */
+    main {
       max-width: 900px;
       margin: 0 auto;
-      padding: 0 2rem;
+      padding: 2.5rem 2rem;
     }
 
-    /* ── SECTION HEADERS ── */
-    .section-header {
-      margin: 3.5rem 0 1.5rem;
-      padding-bottom: 0.4rem;
-      border-bottom: 1px solid var(--rule);
-      display: flex;
-      align-items: baseline;
-      gap: 1rem;
+    /* ── PAGE TITLE ── */
+    .page-title {
+      margin-bottom: 2rem;
+      border-bottom: 2px solid #222;
+      padding-bottom: 1rem;
     }
-    .section-number {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.65rem;
-      color: var(--accent);
-      letter-spacing: 0.15em;
+    .page-title .label {
+      font-family: Arial, sans-serif;
+      font-size: 0.8rem;
+      color: #777;
       text-transform: uppercase;
-      flex-shrink: 0;
-    }
-    .section-header h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-    }
-
-    /* ── QUESTION BLOCKS ── */
-    .question-block {
-      background: var(--ink);
-      color: var(--paper);
-      padding: 1.2rem 1.5rem;
-      margin: 2rem 0 1rem;
-      border-left: 4px solid var(--red);
-    }
-    .question-block .q-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: 0.3rem;
-    }
-    .question-block p {
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      font-size: 1.1rem;
-      line-height: 1.5;
-    }
-
-    /* ── MOTIVATION CALLOUT ── */
-    .motivation {
-      border-left: 3px solid var(--rule);
-      padding: 0.5rem 1rem;
-      margin: 0.8rem 0 1.5rem;
-      color: #5a4a3a;
-      font-size: 0.95rem;
-    }
-    .motivation strong {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      display: block;
-      margin-bottom: 0.2rem;
-      color: var(--accent);
-    }
-
-    /* ── FIGURES ── */
-    .figure {
-      margin: 2rem 0 2.5rem;
-      background: white;
-      border: 1px solid var(--light-rule);
-      box-shadow: 2px 4px 12px rgba(0,0,0,0.07);
-    }
-    .figure img {
-      width: 100%;
-      display: block;
-    }
-    .figure figcaption {
-      padding: 1rem 1.2rem 1.1rem;
-      border-top: 1px solid var(--light-rule);
-    }
-    .figure figcaption .fig-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.6rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.3rem;
-    }
-    .figure figcaption .fig-title {
-      font-family: 'Playfair Display', serif;
-      font-weight: 700;
-      font-size: 1rem;
-      margin-bottom: 0.5rem;
-      line-height: 1.3;
-    }
-    .figure figcaption p {
-      font-size: 0.9rem;
-      line-height: 1.65;
-      color: #3a2e24;
-    }
-
-    /* ── DATA QUALITY CALLOUT ── */
-    .dq-box {
-      background: #fff8f0;
-      border: 1px solid var(--rule);
-      border-left: 4px solid var(--accent);
-      padding: 1rem 1.2rem;
-      margin: 1.5rem 0;
-      font-size: 0.92rem;
-    }
-    .dq-box .dq-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.6rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent);
+      letter-spacing: 0.05em;
       margin-bottom: 0.4rem;
     }
-    .dq-box ul {
-      padding-left: 1.2rem;
-      margin-top: 0.3rem;
+    .page-title h2 {
+      font-size: 1.7rem;
+      font-weight: bold;
+      line-height: 1.3;
     }
-    .dq-box li {
-      margin-bottom: 0.3rem;
-    }
-
-    /* ── STAT STRIP ── */
-    .stat-strip {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0;
-      border: 1px solid var(--rule);
-      margin: 2rem 0;
-    }
-    .stat-strip .stat {
-      text-align: center;
-      padding: 1rem;
-      border-right: 1px solid var(--rule);
-    }
-    .stat-strip .stat:last-child { border-right: none; }
-    .stat-strip .stat .num {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--red);
-      line-height: 1;
-    }
-    .stat-strip .stat .label {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.6rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #5a4a3a;
-      margin-top: 0.3rem;
-    }
-
-    /* ── FINDINGS RULE ── */
-    .finding {
-      font-family: 'Playfair Display', serif;
+    .page-title .subtitle {
+      font-size: 1rem;
+      color: #555;
+      margin-top: 0.4rem;
       font-style: italic;
+    }
+
+    /* ── SECTION HEADINGS ── */
+    h3 {
       font-size: 1.2rem;
-      text-align: center;
-      padding: 1.5rem 2rem;
-      border-top: 1px solid var(--rule);
-      border-bottom: 1px solid var(--rule);
-      margin: 2rem 0;
-      color: var(--ink);
-      line-height: 1.5;
+      margin: 2.5rem 0 0.75rem;
+      border-left: 4px solid #222;
+      padding-left: 0.6rem;
+    }
+    h4 {
+      font-size: 1rem;
+      font-weight: bold;
+      margin: 1.8rem 0 0.5rem;
+      color: #333;
+    }
+
+    p {
+      margin-bottom: 0.9rem;
+    }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── QUESTION BLOCKS ── */
+    .question {
+      background: #f9f9f9;
+      border-left: 4px solid #444;
+      padding: 0.8rem 1rem;
+      margin: 1rem 0 0.5rem;
+      font-style: italic;
+    }
+    .question strong {
+      font-style: normal;
+      font-size: 0.78rem;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #666;
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    /* ── DATA QUALITY BOX ── */
+    .dq-box {
+      background: #fffbf0;
+      border: 1px solid #d4b483;
+      padding: 0.9rem 1.1rem;
+      margin: 1rem 0;
+      font-size: 0.93rem;
+    }
+    .dq-box p { margin-bottom: 0.4rem; }
+    .dq-box ul {
+      padding-left: 1.3rem;
+      margin-top: 0.3rem;
+    }
+    .dq-box li { margin-bottom: 0.3rem; }
+
+    /* ── FIGURES ── */
+    figure {
+      margin: 1.8rem 0 2.2rem;
+    }
+    figure img {
+      width: 100%;
+      display: block;
+      border: 1px solid #ddd;
+    }
+    figcaption {
+      margin-top: 0.6rem;
+      font-size: 0.88rem;
+      color: #444;
+      line-height: 1.6;
+    }
+    figcaption strong {
+      display: block;
+      font-family: Arial, sans-serif;
+      font-size: 0.82rem;
+      color: #222;
+      margin-bottom: 0.2rem;
     }
 
     /* ── SUMMARY ── */
     .summary {
-      background: var(--ink);
-      color: var(--paper);
-      padding: 3rem 2rem;
-      margin: 3rem 0 0;
-    }
-    .summary h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-      border-bottom: 1px solid #5a4a3a;
-      padding-bottom: 0.5rem;
-    }
-    .summary p {
-      font-size: 0.97rem;
-      line-height: 1.8;
-      margin-bottom: 1rem;
-      color: #ddd4c8;
-    }
-    .summary p:last-child { margin-bottom: 0; }
-
-    /* ── FOOTER ── */
-    footer {
-      text-align: center;
+      background: #f4f4f4;
+      border-top: 2px solid #222;
       padding: 1.5rem;
-      font-family: 'Space Mono', monospace;
-      font-size: 0.6rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--rule);
-      border-top: 1px solid var(--light-rule);
+      margin-top: 3rem;
+    }
+    .summary h3 {
+      border-left: none;
+      padding-left: 0;
+      margin-top: 0;
+      margin-bottom: 0.8rem;
+      font-size: 1.15rem;
     }
 
-    /* ── INLINE EMPHASIS ── */
-    .red { color: var(--red); font-weight: 400; }
-    .blue { color: var(--blue); }
-
-    p { margin-bottom: 0.9rem; }
-    p:last-child { margin-bottom: 0; }
+    /* ── STAT ROW ── */
+    .stats {
+      display: flex;
+      gap: 1px;
+      background: #ccc;
+      border: 1px solid #ccc;
+      margin: 1.2rem 0;
+    }
+    .stat {
+      flex: 1;
+      background: #fff;
+      text-align: center;
+      padding: 0.8rem 0.5rem;
+    }
+    .stat .num {
+      font-size: 1.8rem;
+      font-weight: bold;
+      line-height: 1;
+    }
+    .stat .lbl {
+      font-family: Arial, sans-serif;
+      font-size: 0.72rem;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-top: 0.2rem;
+    }
   </style>
 </head>
 <body>
 
-<div class="masthead">
-  <div class="kicker">MIT 6.C85 · Assignment 2 · Exploratory Visual Analysis</div>
-  <h1>Corporate Landlords Are Reshaping Boston — Unevenly</h1>
-  <div class="deck">An exploratory analysis of corporate ownership, owner occupancy, and their diverging trajectories across Boston's 21 neighborhoods, 2004–2024.</div>
-  <div class="byline">Disha &nbsp;|&nbsp; Subtheme: Corporate Landlords & Evictions &nbsp;|&nbsp; Dataset: Corporate Ownership & Occupancy Over Time</div>
+<div class="site-header">
+  <h1>MIT 6.C85 · Visualization &amp; Society · Spring 2026 · Disha</h1>
+  <nav class="tabs">
+    <a href="../index.html" class="active">A2: Exploratory Analysis</a>
+    <a class="disabled">A3: Critique &amp; Redesign</a>
+    <a class="disabled">A4: Persuasive/Deceptive</a>
+  </nav>
 </div>
 
-<div class="container">
+<main>
+
+  <div class="page-title">
+    <div class="label">Assignment 2 · Subtheme: Corporate Landlords &amp; Evictions</div>
+    <h2>Corporate Landlords Are Reshaping Boston — Unevenly</h2>
+    <div class="subtitle">Exploratory analysis of corporate ownership and owner occupancy across 21 Boston neighborhoods, 2004–2024.</div>
+  </div>
 
   <!-- ── OVERALL QUESTIONS ── -->
-  <div class="section-header">
-    <span class="section-number">§ 01</span>
-    <h2>Overall Questions</h2>
-  </div>
+  <h3>Overall Questions</h3>
 
-  <p>Before touching the data, I grounded my investigation in two background readings: the <em>Homes for All MA</em> report on COVID-era evictions in Massachusetts, and the New York Times deep dive into 83 million eviction records. Both surfaced the same core concern: that the identity of a landlord — corporate vs. resident — shapes how tenants are treated, especially in crises. With that framing, I posed three questions targeting substantially different angles of the dataset.</p>
+  <p>Before looking at the data, I read through the <em>Homes for All MA</em> report on COVID-era evictions and the New York Times article on 83 million eviction records. Both emphasize that who owns a property — corporate entity vs. resident landlord — shapes how tenants are treated, especially in crises. With that framing, I posed three questions targeting different angles of the dataset.</p>
 
-  <div class="question-block">
-    <div class="q-label">Question 1</div>
-    <p>Is there a structural tradeoff between corporate ownership and owner occupancy — and how strong is it across Boston's neighborhoods?</p>
+  <div class="question">
+    <strong>Question 1</strong>
+    Is there a structural tradeoff between corporate ownership and owner occupancy — and how strong is it across Boston's neighborhoods?
   </div>
-  <div class="motivation">
-    <strong>Motivation</strong>
-    The Homes for All MA report argues that "live-in or live-nearby landlords tended to file for fewer evictions," implying that owner-occupancy is a stabilizing force. If corporate ownership and owner occupancy are truly inverse forces, we should see a strong negative correlation between them. Testing this is the first sanity check before any policy recommendation can be made about promoting local ownership.
-  </div>
+  <p><em>Motivation:</em> The Homes for All MA report argues that live-in landlords file fewer evictions, implying owner-occupancy is a stabilizing force. If corporate ownership and owner occupancy are truly inverse forces, we should see a strong negative correlation between them across neighborhoods. This is the foundational check before any policy recommendation about promoting local ownership.</p>
 
-  <div class="question-block">
-    <div class="q-label">Question 2</div>
-    <p>Has corporate ownership grown faster in majority-white or majority-nonwhite neighborhoods — and what does this pattern suggest about who bears the risk of displacement?</p>
+  <div class="question">
+    <strong>Question 2</strong>
+    Has corporate ownership grown faster in majority-white or majority-nonwhite neighborhoods — and what does this suggest about who bears the risk of displacement?
   </div>
-  <div class="motivation">
-    <strong>Motivation</strong>
-    The Homes for All MA report found that "communities of color, especially Black and Latinx people, faced particularly high rates of eviction." The NYT piece similarly notes stark racial disparities in eviction data. If corporate ownership has been growing most rapidly in neighborhoods already home to communities of color, that would suggest a compounding dynamic: financialization concentrates where vulnerability is highest. This question uses the 2004–2024 time range to assess whether Boston fits this national pattern.
-  </div>
+  <p><em>Motivation:</em> The Homes for All MA report found that communities of color — particularly Black and Latinx residents — faced disproportionately high eviction rates. If corporate ownership has been growing fastest in neighborhoods with more residents of color, that would point to a compounding dynamic between financialization and racial displacement. I use the 2004–2024 window to test whether Boston fits this national pattern.</p>
 
-  <div class="question-block">
-    <div class="q-label">Question 3</div>
-    <p>Did the COVID-19 pandemic accelerate the pace of corporate acquisition — and which neighborhoods saw the sharpest post-pandemic inflection?</p>
+  <div class="question">
+    <strong>Question 3</strong>
+    Did the COVID-19 pandemic accelerate the pace of corporate acquisition — and which neighborhoods saw the sharpest post-pandemic inflection?
   </div>
-  <div class="motivation">
-    <strong>Motivation</strong>
-    The Homes for All MA report focuses specifically on COVID-era evictions, noting that corporate landlords continued filing even during the moratorium. This raises a follow-on question: did the economic disruption of the pandemic also accelerate corporate entry into the housing market? If rates of corporate acquisition steepened sharply after 2020, that would suggest COVID acted not just as a crisis for tenants, but as an opportunity for institutional investors — consistent with national reporting on pandemic-era real estate consolidation.
-  </div>
+  <p><em>Motivation:</em> The Homes for All MA report documents that corporate landlords continued filing evictions even during the moratorium. A related question is whether the pandemic also accelerated corporate entry into the housing market — consistent with national reporting on institutional investors exploiting pandemic-era disruption.</p>
 
-  <!-- ── PHASE 1: DATA OVERVIEW ── -->
-  <div class="section-header">
-    <span class="section-number">§ 02</span>
-    <h2>Phase 1: Data Overview & Quality</h2>
-  </div>
+  <!-- ── PHASE 1 ── -->
+  <h3>Phase 1: Data Overview &amp; Quality</h3>
 
-  <p>The dataset contains <strong>441 records</strong> across 21 Boston neighborhoods, covering 2004–2024 (21 years × 21 neighborhoods). The two core time-varying fields are <code>corp_own_rate</code> and <code>own_occ_rate</code>. All demographic variables (population, race/ethnicity, housing units) are <strong>static across years</strong> — they reflect a single Census snapshot joined to every year row. This is an important limitation: it means we cannot observe how neighborhood demographics changed over the same 20-year window, only how ownership rates changed against a fixed demographic baseline.</p>
+  <p>The dataset contains 441 records across 21 Boston neighborhoods, covering 2004–2024 (21 years × 21 neighborhoods). The two core time-varying fields are <code>corp_own_rate</code> and <code>own_occ_rate</code>. All demographic variables are <strong>static across years</strong> — they reflect a single Census snapshot joined to every year row. This means we cannot track how neighborhood demographics changed over the same 20-year window, only how ownership rates changed against a fixed demographic baseline.</p>
 
   <div class="dq-box">
-    <div class="dq-label">⚠ Data Quality Notes</div>
+    <p><strong>Data quality notes:</strong></p>
     <ul>
-      <li><strong>Frozen demographics:</strong> Census-derived fields (population, race counts, housing units) are identical for every year within a neighborhood. Any cross-year demographic analysis in this dataset reflects the structure of the join, not real change.</li>
-      <li><strong>No missing values</strong> were found anywhere in the dataset — all 441 records are complete for all 40 fields.</li>
-      <li><strong>All 21 neighborhoods have exactly 21 records</strong> (one per year), confirming balanced panel coverage with no gaps.</li>
-      <li><strong>Derived vacancy rate</strong> (vacant_unit / tot_unit) shows plausible variation (4–22%), with South Boston Waterfront and Downtown exhibiting unusually high vacancy in 2024 — likely reflecting new luxury construction with slow absorption rather than disinvestment.</li>
+      <li><strong>Frozen demographics:</strong> Census-derived fields (population, race counts, housing units) are identical for every year within a neighborhood. Any demographic analysis here reflects the structure of the join, not real change over time.</li>
+      <li><strong>No missing values</strong> were found in any of the 441 records across all 40 fields.</li>
+      <li><strong>All 21 neighborhoods have exactly 21 records</strong> — one per year — confirming a balanced panel with no gaps.</li>
+      <li><strong>Vacancy rates</strong> (vacant_unit / tot_unit) appear plausible (4–22%), with South Boston Waterfront and Downtown showing higher vacancy in 2024, likely reflecting new luxury construction with slow absorption.</li>
     </ul>
   </div>
 
-  <div class="stat-strip">
-    <div class="stat"><div class="num">441</div><div class="label">Total records</div></div>
-    <div class="stat"><div class="num">21</div><div class="label">Neighborhoods × Years</div></div>
-    <div class="stat"><div class="num">0</div><div class="label">Missing values</div></div>
+  <div class="stats">
+    <div class="stat"><div class="num">441</div><div class="lbl">Total records</div></div>
+    <div class="stat"><div class="num">21</div><div class="lbl">Neighborhoods</div></div>
+    <div class="stat"><div class="num">21</div><div class="lbl">Years (2004–2024)</div></div>
+    <div class="stat"><div class="num">0</div><div class="lbl">Missing values</div></div>
   </div>
 
-  <figure class="figure">
-    <img src="figs/fig1_coverage.png" alt="Data coverage by neighborhood"/>
+  <figure>
+    <img src="figs/fig1_coverage.png" alt="Data coverage: records per neighborhood">
     <figcaption>
-      <div class="fig-label">Figure 1 · Data Quality</div>
-      <div class="fig-title">All 21 Neighborhoods Have Complete 21-Year Coverage (2004–2024)</div>
-      <p>Every neighborhood has exactly 21 records — one for each year in the dataset — confirming that the panel is perfectly balanced with no gaps or missing years. The red dashed line marks the expected count of 21. This uniformity is a positive data quality signal: unlike many administrative datasets, there is no attrition or selective reporting that would bias trend analysis.</p>
+      <strong>Figure 1 – Data Coverage: Records per Neighborhood</strong>
+      Every neighborhood has exactly 21 records — one per year — confirming a perfectly balanced panel. The red dashed line marks the expected count of 21. This means there is no attrition or selective reporting that could bias trend analysis.
     </figcaption>
   </figure>
 
-  <figure class="figure">
-    <img src="figs/fig2_distributions.png" alt="Distributions of key rates (2024)"/>
+  <figure>
+    <img src="figs/fig2_distributions.png" alt="Distributions of key rates in 2024">
     <figcaption>
-      <div class="fig-label">Figure 2 · Data Overview</div>
-      <div class="fig-title">Corporate Ownership Is Right-Skewed; Owner Occupancy Is Roughly Normal; Vacancy Is Concentrated at Lower Rates</div>
-      <p>Across 2024 values, corporate ownership rates range from roughly 10% to 41%, with most neighborhoods clustered below 30% but a long right tail of high-corporate neighborhoods. Owner occupancy is more symmetric, centered around 35–45%. Vacancy rates are low and right-skewed, with most neighborhoods below 10% but a few outliers (Downtown, South Boston Waterfront) in the 15–22% range. These distributions confirm that corporate takeover is not a uniform phenomenon — it varies substantially across neighborhoods, making disaggregation essential.</p>
+      <strong>Figure 2 – Distribution of Key Rates Across Neighborhoods (2024)</strong>
+      Corporate ownership rates range from roughly 10% to 41%, right-skewed with most neighborhoods below 30%. Owner occupancy is more symmetric, centered around 35–45%. Vacancy rates are low and concentrated, with a few outliers above 15%. These distributions confirm that corporate expansion is not uniform — it varies substantially across neighborhoods, making neighborhood-level disaggregation essential.
     </figcaption>
   </figure>
 
-  <figure class="figure">
-    <img src="figs/fig4_gutcheck_2020.png" alt="Gut check: owner occupancy vs corporate ownership by neighborhood (2020)"/>
+  <figure>
+    <img src="figs/fig4_gutcheck_2020.png" alt="Gut check: owner occupancy vs corporate ownership by neighborhood (2020)">
     <figcaption>
-      <div class="fig-label">Figure 3 · Gut Check</div>
-      <div class="fig-title">The Pattern Matches Expectations: Outer Residential Neighborhoods Have High Owner Occupancy; Dense Urban Core Has High Corporate Ownership</div>
-      <p>As a gut check, we expect West Roxbury, Hyde Park, and Roslindale — Boston's most suburban residential neighborhoods — to have the highest owner occupancy rates, and neighborhoods like Fenway, Longwood, and Allston (dominated by rentals and student housing) to have the lowest. The 2020 snapshot confirms exactly this: West Roxbury leads with 66% owner occupancy and only 7% corporate ownership, while Fenway sits at 16% owner occupancy and 27% corporate ownership. This alignment between expectation and observation builds confidence in the dataset's validity.</p>
+      <strong>Figure 3 – Gut Check: Owner Occupancy vs. Corporate Ownership by Neighborhood (2020)</strong>
+      As a sanity check, we expect outer residential neighborhoods like West Roxbury, Hyde Park, and Roslindale to have the highest owner occupancy, and denser rental-heavy neighborhoods like Fenway, Allston, and Longwood to have the lowest. The 2020 snapshot confirms this exactly: West Roxbury leads at 66% owner occupancy and 7% corporate ownership, while Fenway sits at 16% owner occupancy and 27% corporate ownership. This alignment with expectations builds confidence in the dataset's validity.
     </figcaption>
   </figure>
 
-  <!-- ── PHASE 2: QUESTION 1 ── -->
-  <div class="section-header">
-    <span class="section-number">§ 03</span>
-    <h2>Q1: The Structural Tradeoff Between Corporate & Owner Occupancy</h2>
-  </div>
-
-  <p>The central premise of housing stability research is that owner-occupants and corporate landlords represent opposite ends of the landlord spectrum. To test whether this tradeoff manifests structurally in Boston's housing market, I examined the cross-neighborhood correlation between corporate ownership rate and owner occupancy rate.</p>
-
-  <figure class="figure">
-    <img src="figs/fig5_q1_scatter.png" alt="Corporate ownership vs owner occupancy scatter (2020), colored by % non-white"/>
+  <figure>
+    <img src="figs/fig3_citywide_trend.png" alt="Citywide trends: corporate ownership vs owner occupancy 2004–2024">
     <figcaption>
-      <div class="fig-label">Figure 4 · Question 1</div>
-      <div class="fig-title">A Strong Negative Relationship: Higher Corporate Ownership Predicts Lower Owner Occupancy (r ≈ −0.91 in 2020)</div>
-      <p>Across all 21 neighborhoods in 2020, there is a striking inverse relationship between corporate ownership rate and owner occupancy rate. The Pearson correlation is −0.91, indicating that neighborhoods with more corporate landlords have systematically fewer owner-occupants. The color encoding reveals a secondary pattern: the neighborhoods with the lowest owner occupancy and highest corporate ownership (upper left region) tend to have higher proportions of non-white residents — a spatial overlap between corporate concentration and racial minority populations. Notably, Roxbury sits at high corporate ownership but also relatively low owner occupancy despite being majority non-white, while West Roxbury — majority white — anchors the high-occupancy, low-corporate quadrant.</p>
+      <strong>Figure 4 – Citywide Trends: Corporate Ownership vs. Owner Occupancy (2004–2024)</strong>
+      Averaged across all 21 neighborhoods, corporate ownership rose from 5.5% in 2004 to 25.3% in 2024 — a roughly 5× increase. Over the same period, average owner occupancy declined from 43.6% to 38.0%. The two trends move in opposite directions throughout, and the gap appears to widen after COVID-19 (marked with dotted line), which foreshadows the questions explored in Phase 2.
     </figcaption>
   </figure>
 
-  <div class="finding">"The negative correlation between corporate ownership and owner occupancy has grown <em>stronger</em> over time — reaching −0.94 in 2023 — suggesting that as corporate landlords expand, they are systematically crowding out owner-occupants."</div>
+  <!-- ── Q1 ── -->
+  <h3>Question 1: The Structural Tradeoff Between Corporate &amp; Owner Occupancy</h3>
 
-  <figure class="figure">
-    <img src="figs/fig6_q1_corr_time.png" alt="Correlation between corporate and owner occupancy over time"/>
+  <p>The central premise of housing stability research is that corporate landlords and owner-occupants represent opposite ends of the landlord spectrum. I tested whether this tradeoff appears structurally across Boston's neighborhoods.</p>
+
+  <figure>
+    <img src="figs/fig5_q1_scatter.png" alt="Corporate ownership vs owner occupancy, 2020, colored by % non-white">
     <figcaption>
-      <div class="fig-label">Figure 5 · Question 1 Follow-Up</div>
-      <div class="fig-title">The Corporate–Owner Occupancy Tradeoff Has Deepened Consistently Since 2004</div>
-      <p>Rather than a static relationship, the negative correlation between corporate ownership and owner occupancy has been intensifying over the full 20-year window, with the Pearson r strengthening from −0.80 in 2004 to −0.94 in 2023. This trend suggests that the market is not simply bifurcated into "corporate" and "owner-occupied" neighborhoods — it is actively diverging, with corporate-heavy neighborhoods becoming more corporate and owner-occupied neighborhoods holding (or losing ground more slowly). The slight weakening around 2010 may reflect post-financial-crisis market disruption before the trend resumed. The COVID-19 onset (2020) does not appear to break the trend.</p>
+      <strong>Figure 5 – Corporate Ownership vs. Owner Occupancy by Neighborhood (2020), colored by % non-white population</strong>
+      The relationship is strikingly inverse: the Pearson correlation between corporate ownership and owner occupancy across all 21 neighborhoods in 2020 is −0.91. Neighborhoods with more corporate landlords have systematically fewer owner-occupants. The color encoding adds a secondary pattern: neighborhoods with the lowest owner occupancy and highest corporate ownership tend to have higher shares of non-white residents (darker red), while West Roxbury anchors the opposite end — high occupancy, low corporate ownership, majority white.
     </figcaption>
   </figure>
 
-  <!-- ── PHASE 2: QUESTION 2 ── -->
-  <div class="section-header">
-    <span class="section-number">§ 04</span>
-    <h2>Q2: Who Bears the Burden of Corporate Expansion?</h2>
-  </div>
-
-  <p>Having established that corporate and owner-occupant housing are in structural tension, the next question is whether this expansion has been spatially equitable — or whether corporate landlords have concentrated in neighborhoods where residents of color are most present.</p>
-
-  <figure class="figure">
-    <img src="figs/fig7_q2_lines.png" alt="Corporate ownership trends by neighborhood, colored by % non-white"/>
+  <figure>
+    <img src="figs/fig6_q1_corr_time.png" alt="Correlation between corporate and owner occupancy over time, 2004–2024">
     <figcaption>
-      <div class="fig-label">Figure 6 · Question 2</div>
-      <div class="fig-title">Corporate Ownership Has Risen Across All Neighborhoods — But the Fastest Growth Is in Whiter, Higher-Income Areas Near the Urban Core</div>
-      <p>Every single neighborhood in Boston saw corporate ownership increase between 2004 and 2024, but the rate of growth was far from uniform. Counter-intuitively, the neighborhoods with the steepest absolute increases — South Boston Waterfront, Fenway, Charlestown, East Boston — are not the most non-white (shown in green/yellow). Meanwhile, the most heavily non-white neighborhoods (Roxbury, Mattapan, Dorchester, shown in red/orange) started at lower baseline rates and saw more moderate absolute growth. This suggests that corporate investment is currently tracking neighborhood gentrification pressure rather than pre-existing minority concentration, though the gap may narrow as capital seeks lower-cost entry points.</p>
+      <strong>Figure 6 – The Corporate–Owner Occupancy Correlation Has Deepened Over Time (2004–2024)</strong>
+      Rather than a static relationship, the negative correlation between these two rates has strengthened over the full 20-year window, going from −0.80 in 2004 to −0.94 by 2023. This means that corporate-heavy neighborhoods are becoming more so, while owner-occupied neighborhoods are holding their character or losing ground more slowly. The COVID-19 onset (2020) does not visibly break the trend — the structural divergence was already well underway.
     </figcaption>
   </figure>
 
-  <figure class="figure">
-    <img src="figs/fig8_q2_change.png" alt="Change in corporate ownership 2004-2024 by neighborhood, colored by % non-white"/>
+  <!-- ── Q2 ── -->
+  <h3>Question 2: Who Bears the Burden of Corporate Expansion?</h3>
+
+  <p>Having established the structural tradeoff, the next question is whether corporate expansion has been spatially equitable — or whether it has concentrated in neighborhoods where residents of color are most present.</p>
+
+  <figure>
+    <img src="figs/fig7_q2_lines.png" alt="Corporate ownership trends by neighborhood, colored by % non-white">
     <figcaption>
-      <div class="fig-label">Figure 7 · Question 2 Follow-Up</div>
-      <div class="fig-title">South Boston Waterfront, Fenway, and East Boston Saw the Largest Corporate Acquisition Growth — The Latter Being the Most Non-White of the Three</div>
-      <p>Sorting neighborhoods by absolute growth in corporate ownership from 2004 to 2024 reveals a striking group at the top: South Boston Waterfront (+32 percentage points), Fenway (+27 pp), and East Boston (+27 pp). The color coding by racial composition adds nuance — East Boston (over 63% non-white) stands out as the only majority-nonwhite neighborhood in the top tier of corporate growth, raising concerns about displacement risk for its large Latinx community. The bottom of the chart — Hyde Park, Roslindale, Mattapan — are all highly non-white outer neighborhoods that have seen slower corporate expansion, but even their rates have roughly tripled since 2004. The correlation between corporate growth rate and % non-white is −0.52, suggesting that at this moment, corporate investment is somewhat preferring whiter, more gentrifying neighborhoods, but that this could shift as those markets become saturated.</p>
+      <strong>Figure 7 – Corporate Ownership Trends by Neighborhood (2004–2024), colored by % non-white population</strong>
+      Every neighborhood saw corporate ownership rise, but growth was far from uniform. Counter-intuitively, the neighborhoods with the steepest absolute increases — South Boston Waterfront, Fenway, Charlestown — are not the most non-white (shown in green/yellow on the color scale). Meanwhile, the most heavily non-white neighborhoods like Roxbury, Mattapan, and Dorchester started at lower baselines and saw more moderate absolute growth. This suggests corporate investment is currently tracking gentrification pressure more than pre-existing minority concentration.
     </figcaption>
   </figure>
 
-  <figure class="figure">
-    <img src="figs/fig12_q2_deepdive.png" alt="Corporate ownership deep dives: selected neighborhoods"/>
+  <figure>
+    <img src="figs/fig8_q2_change.png" alt="Change in corporate ownership 2004–2024, colored by % non-white">
     <figcaption>
-      <div class="fig-label">Figure 8 · Question 2 Deep Dive</div>
-      <div class="fig-title">Majority Non-White Neighborhoods Show Steady Growth; Post-COVID Acceleration Is More Visible in Whiter Neighborhoods Like Charlestown</div>
-      <p>Disaggregating into two groups of four neighborhoods illuminates contrasting trajectories. In majority non-white neighborhoods (left panel), corporate ownership has grown at a relatively steady pace — Roxbury grew from 7% in 2004 to 25% in 2024, while Mattapan went from just 2% to 14%. In contrast, some majority-white or mixed neighborhoods (right panel) — particularly Charlestown and South Boston Waterfront — show a visible post-2020 inflection, with steeper acceleration after COVID-19. This divergence in the shape of the trend (smooth vs. accelerating) suggests different mechanisms at play: steady long-run corporate interest in non-white neighborhoods vs. a more recent speculative wave in gentrifying white-majority areas.</p>
+      <strong>Figure 8 – Growth in Corporate Ownership 2004–2024 by Neighborhood, colored by % non-white population</strong>
+      South Boston Waterfront (+32 pp), Fenway (+27 pp), and East Boston (+27 pp) top the list. East Boston stands out: it is the only majority-nonwhite neighborhood (63% non-white, predominantly Latinx) in the top tier of corporate growth, raising particular concerns about displacement risk. The overall correlation between corporate growth and % non-white is −0.52, suggesting corporate investment currently prefers whiter, gentrifying neighborhoods — but this may shift as those markets become saturated and capital seeks lower-cost entry points in majority-nonwhite areas.
     </figcaption>
   </figure>
 
-  <!-- ── PHASE 2: QUESTION 3 ── -->
-  <div class="section-header">
-    <span class="section-number">§ 05</span>
-    <h2>Q3: Did COVID-19 Accelerate the Corporate Takeover?</h2>
-  </div>
-
-  <p>The Homes for All MA report focuses on COVID as a moment of crisis for tenants — but the same period may have been an opportunity for institutional investors. To test this, I fit linear trends to corporate ownership rates for each neighborhood before (2004–2019) and after (2020–2024) COVID, and compared the slopes.</p>
-
-  <figure class="figure">
-    <img src="figs/fig9_q3_slopes.png" alt="Pre vs post-COVID slopes of corporate ownership by neighborhood"/>
+  <figure>
+    <img src="figs/fig12_q2_deepdive.png" alt="Corporate ownership deep dives in selected neighborhoods">
     <figcaption>
-      <div class="fig-label">Figure 9 · Question 3</div>
-      <div class="fig-title">Every Neighborhood Saw Its Corporate Ownership Growth Rate Accelerate After COVID — With Charlestown, Longwood, and East Boston Leading the Post-Pandemic Surge</div>
-      <p>Fitting linear trends to each neighborhood's corporate ownership rate separately for the pre-COVID (2004–2019) and post-COVID (2020–2024) periods reveals a striking universal pattern: every single neighborhood in Boston experienced a higher rate of corporate acquisition after 2020 than before. The acceleration was most extreme in Charlestown, Longwood, and East Boston — neighborhoods experiencing rapid transformation — where post-COVID slopes exceed 2.5 percentage points per year. Even the slowest-growing neighborhood post-COVID (Roxbury, Hyde Park) grew faster than their pre-pandemic rate. This is consistent with national reporting on institutional investors exploiting pandemic-era disruption to accelerate property acquisition.</p>
+      <strong>Figure 9 – Deep Dive: Corporate Ownership in Selected Neighborhoods, by Racial Composition</strong>
+      Comparing four majority-nonwhite neighborhoods (left) vs. four majority-white or mixed neighborhoods (right) reveals different trajectory shapes. Roxbury, Mattapan, Dorchester, and East Boston show steady, consistent growth throughout the period. In contrast, Charlestown and South Boston Waterfront show a visible post-2020 inflection with steeper acceleration after COVID. This suggests different mechanisms: long-run structural corporate interest in nonwhite neighborhoods vs. a more recent speculative wave in gentrifying areas.
     </figcaption>
   </figure>
 
-  <figure class="figure">
-    <img src="figs/fig10_q3_occ_slopes.png" alt="Pre vs post-COVID slopes of owner occupancy by neighborhood"/>
+  <!-- ── Q3 ── -->
+  <h3>Question 3: Did COVID-19 Accelerate Corporate Acquisition?</h3>
+
+  <p>To test whether COVID accelerated corporate entry, I fit linear trends to each neighborhood's corporate ownership rate separately for the pre-COVID (2004–2019) and post-COVID (2020–2024) periods and compared the slopes.</p>
+
+  <figure>
+    <img src="figs/fig9_q3_slopes.png" alt="Pre vs post-COVID slopes of corporate ownership by neighborhood">
     <figcaption>
-      <div class="fig-label">Figure 10 · Question 3 Follow-Up</div>
-      <div class="fig-title">Owner Occupancy Was Already Declining Before COVID; Post-Pandemic, the Decline Has Largely Stabilized — But Longwood, Downtown, and South End Continue Falling</div>
-      <p>The mirror image of corporate growth is the trend in owner occupancy. Before COVID, nearly all neighborhoods showed declining owner occupancy rates. After 2020, the picture is more mixed: many neighborhoods have stabilized near zero slope, while a handful — Longwood, Downtown, South End, South Boston, Jamaica Plain — continue declining. The stabilization is partly mechanistic: if owner occupancy was already low (e.g., Fenway at 16%), there is less room to fall. But the absence of a post-COVID recovery in owner occupancy, even where corporate growth accelerated, suggests that lost owner-occupants are not returning. The data does not support a "temporary displacement" narrative.</p>
+      <strong>Figure 10 – Rate of Corporate Ownership Growth Before vs. After COVID (annual slope, pp/year)</strong>
+      Every single neighborhood in Boston experienced a higher rate of corporate acquisition after 2020 than before — without exception. Post-COVID slopes in Charlestown, Longwood, and East Boston exceed 2.5 percentage points per year. Even the slowest post-COVID growers (Roxbury, Hyde Park) outpaced their pre-pandemic rate. This universal acceleration is consistent with national reporting on institutional investors exploiting pandemic-era disruption to consolidate property holdings.
     </figcaption>
   </figure>
 
-  <figure class="figure">
-    <img src="figs/fig11_q3_scatter.png" alt="Post-COVID corporate growth vs % non-white"/>
+  <figure>
+    <img src="figs/fig10_q3_occ_slopes.png" alt="Pre vs post-COVID slopes of owner occupancy by neighborhood">
     <figcaption>
-      <div class="fig-label">Figure 11 · Question 3 Follow-Up</div>
-      <div class="fig-title">Post-COVID Corporate Acceleration Was Stronger in Whiter Neighborhoods — Suggesting Capital Currently Targets Gentrifying Markets Over Established Communities of Color</div>
-      <p>Plotting each neighborhood's post-COVID corporate ownership growth rate against its share of non-white residents reveals a negative relationship: neighborhoods with more white residents experienced faster corporate acquisition growth after 2020. The trend line shows that a 50-percentage-point increase in non-white population share is associated with roughly a 1 pp/year lower post-COVID growth rate. East Boston is a notable outlier: a majority non-white (63%) neighborhood with one of the highest post-COVID corporate growth rates (~2.7 pp/yr), signaling that its ongoing gentrification makes it a target despite its demographics. Roxbury and Mattapan — both over 85% non-white — sit at the bottom of the post-COVID growth chart, but this may reflect their lower property values as a temporary barrier rather than protection from corporate interest.</p>
+      <strong>Figure 11 – Rate of Owner Occupancy Change Before vs. After COVID (annual slope, pp/year)</strong>
+      Before COVID, nearly all neighborhoods were already losing owner occupancy at a slow, steady rate. After 2020, the picture is more mixed: many neighborhoods have stabilized near zero slope, but several — Longwood, Downtown, South End — continue declining. Crucially, no neighborhood shows a meaningful post-COVID recovery in owner occupancy. Once owner-occupants leave, they are not returning. This data does not support a "temporary displacement" narrative.
+    </figcaption>
+  </figure>
+
+  <figure>
+    <img src="figs/fig11_q3_scatter.png" alt="Post-COVID corporate growth rate vs % non-white population">
+    <figcaption>
+      <strong>Figure 12 – Post-COVID Corporate Growth Rate vs. Neighborhood Racial Composition</strong>
+      Plotting post-COVID corporate ownership growth rate against each neighborhood's % non-white residents shows a negative relationship: whiter neighborhoods experienced faster corporate acquisition after 2020. East Boston is a clear outlier — majority Latinx yet one of the highest post-COVID growth rates, reflecting its ongoing gentrification. Roxbury and Mattapan, both over 85% non-white, sit at the bottom of the post-COVID growth chart. This may reflect lower property values as a temporary barrier rather than protection from eventual corporate interest.
     </figcaption>
   </figure>
 
   <!-- ── SUMMARY ── -->
   <div class="summary">
-    <div class="container">
-      <h2>Summary: Main Lessons Learned</h2>
-      <p>Across 20 years of data for 21 Boston neighborhoods, three core findings emerge. First, <strong>corporate ownership and owner occupancy are in near-perfect structural opposition</strong>: the cross-neighborhood correlation between the two has grown from −0.80 in 2004 to −0.94 in 2023, and every percentage point gained by corporate owners corresponds to lost owner-occupants. This confirms the mechanistic premise underlying the Homes for All MA report's policy recommendation to promote local ownership.</p>
-      <p>Second, <strong>the geography of corporate expansion does not simply track racial composition</strong>. Counter to a simple "corporate landlords target communities of color" narrative, the neighborhoods with the largest absolute growth in corporate ownership over 2004–2024 — South Boston Waterfront, Fenway, Charlestown — skew whiter. The most non-white neighborhoods (Roxbury, Mattapan, Hyde Park) have seen corporate ownership triple but from lower baselines. East Boston is the most important exception: a majority Latinx neighborhood that has seen rapid corporate acquisition, consistent with its well-documented gentrification pressure.</p>
-      <p>Third, <strong>COVID-19 was a universal accelerant</strong>. Without exception, every neighborhood in Boston saw a higher rate of corporate acquisition in the 2020–2024 period than in any comparable window before the pandemic. This acceleration was sharpest in already-gentrifying neighborhoods, but no neighborhood was immune. The implication is that the window for policy intervention — before corporate ownership reaches levels that structurally preclude owner-occupancy — may be narrowing rapidly in neighborhoods currently at the mid-range of corporate ownership, like East Boston, Brighton, and Jamaica Plain.</p>
-      <p>Key limitations to carry forward: demographic fields are frozen at a single Census snapshot, preventing analysis of how racial composition itself changed alongside ownership structure. The dataset also does not include eviction filings directly — future analysis linking these ownership trends to the eviction data would substantially strengthen the causal story.</p>
-    </div>
+    <h3>Summary</h3>
+    <p><strong>Three core findings emerge from this analysis.</strong> First, corporate ownership and owner occupancy are in near-perfect structural opposition: the cross-neighborhood correlation has grown from −0.80 in 2004 to −0.94 in 2023, confirming the mechanistic premise behind policies that promote local ownership as a tenant-stability strategy.</p>
+    <p>Second, the geography of corporate expansion does not simply track racial composition. The neighborhoods with the largest absolute corporate growth over 2004–2024 — South Boston Waterfront, Fenway, Charlestown — skew whiter and are in active gentrification. The most non-white neighborhoods (Roxbury, Mattapan, Hyde Park) have seen corporate ownership roughly triple but from lower baselines. East Boston is the most important exception: a majority-Latinx neighborhood with rapid corporate acquisition, making it a high-displacement-risk case to watch.</p>
+    <p>Third, COVID-19 was a universal accelerant. Without exception, every neighborhood saw a higher rate of corporate acquisition in 2020–2024 than in any comparable pre-pandemic window. The window for policy intervention — before corporate ownership reaches levels that structurally foreclose owner-occupancy — appears to be narrowing rapidly, especially in mid-range neighborhoods like East Boston, Brighton, and Jamaica Plain.</p>
+    <p><strong>Key limitation:</strong> Demographic fields are frozen at a single Census snapshot, so we cannot observe how racial composition changed alongside ownership structure. Future work linking these trends to eviction filing data would substantially strengthen the causal story.</p>
   </div>
 
-</div><!-- /container -->
+</main>
 
-<footer>MIT 6.C85 · Spring 2026 · Assignment 2: Exploratory Visual Analysis · Dataset: Corporate Ownership & Owner Occupancy Over Time, City of Boston</footer>
 
-</body>
-</html>
+</body></html>
