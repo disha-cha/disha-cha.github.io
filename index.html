@@ -67,56 +67,56 @@
 				<img src="figs/fig4_gutcheck_2020 (1).png" alt="Owner occupancy vs corporate ownership by neighborhood in 2020, sorted by owner occupancy rate">
 				<figcaption>
 					<strong></strong>
-					I wanted to do this as a sort of sanity check. We would expect outer residential neighborhoods like West Roxbury, Hyde Park, and Roslindale to have the highest owner occupancy, and denser rental-heavy neighborhoods like Fenway, Allston, and Longwood to have the lowest. The 2020 snapshot confirms this exactly: West Roxbury leads at 66% owner occupancy and 7% corporate ownership, while Fenway sits at 16% owner occupancy and 27% corporate ownership. This alignment with expectations builds confidence in the dataset’s validity.
+					I wanted to do this as a sort of sanity check. Like we would expect outer residential neighborhoods like West Roxbury, Hyde Park, and Roslindale to have the highest owner occupancy, and denser rental-heavy neighborhoods like Fenway, Allston, and Longwood to have the lowest. This snapshot of 2024 confirms this. West Roxbury leads at 66% owner occupancy and 7% corporate ownership, while Fenway sits at 16% owner occupancy and 27% corporate ownership. I feel that this is close enough alignment with expectations to build confidence in the dataset’s validity.
 				</figcaption>
 			</figure>
 
 			<figure>
 				<img src="figs/fig3_citywide_trend.png" alt="Citywide average corporate ownership and owner occupancy rates, 2004 to 2024">
 				<figcaption>
-					<strong>Figure 3 — Citywide Trends: Corporate Ownership vs. Owner Occupancy (2004–2024).</strong>
-					Averaged across all 21 neighborhoods, corporate ownership rose from 5.5% in 2004 to 25.3% in 2024 — a roughly 5× increase. Over the same period, average owner occupancy declined from 43.6% to 38.0%. The two trends move in opposite directions throughout, and the gap appears to widen after COVID-19 (marked with dotted line), which foreshadows the questions explored below.
+					<strong></strong>
+					Averaged across all of the 21 neighborhoods, corporate ownership rose from about 5.5% in 2004 to 25.3% in 2024, a roughly 5x increase. Over the same period, average owner occupancy declined from 43.6% to 38.0%. The two trends move in opposite directions throughout, and the gap appears to widen after COVID-19 (I marked this with dotted line), foreshadowing some of the results from my analysis of the questions I had.
 				</figcaption>
 			</figure>
 
 			<h3>Question 1: The Structural Tradeoff Between Corporate &amp; Owner Occupancy</h3>
 
-			<p>The central premise of housing stability research is that corporate landlords and owner-occupants represent opposite ends of the landlord spectrum. I tested whether this tradeoff appears structurally across Boston’s neighborhoods.</p>
+			<p>From what I've read, the central premise of housing stability research is that corporate landlords and owner-occupants represent opposite ends of the landlord spectrum. Here, I tested some ways to show whether this tradeoff appears structurally across Boston’s neighborhoods.</p>
 
 			<figure>
 				<img src="figs/fig5_q1_scatter.png" alt="Scatter plot of corporate ownership vs owner occupancy by neighborhood in 2020, colored by percent non-white population">
 				<figcaption>
-					<strong>Figure 4 — Corporate Ownership vs. Owner Occupancy by Neighborhood (2020), colored by % non-white population.</strong>
-					The relationship is strikingly inverse: the Pearson correlation between corporate ownership and owner occupancy across all 21 neighborhoods in 2020 is −0.91. Neighborhoods with more corporate landlords have systematically fewer owner-occupants. The color encoding adds a secondary pattern: neighborhoods with the lowest owner occupancy and highest corporate ownership tend to have higher shares of non-white residents (darker red), while West Roxbury anchors the opposite end — high occupancy, low corporate ownership, majority white.
+					
+					I wanted to map the relationship between corporate ownership and owner occupance here. The relationship is quite strongly inverse. Specifically, I calculated the Pearson correlation between corporate ownership and owner occupancy across all 21 neighborhoods in 2020 to be −0.88. Meaning, neighborhoods with more corporate landlords have systematically fewer owner-occupants. The color encoding adds a secondary pattern which I thought could be interesting, race based trends. But evidently, the racial pattern in this scatter is actually pretty weak. Looking at the plot, it's not like the red dots (majority non-white) cluster cleanly in one corner and the green dots (majority white) in another. So perhaps this isn't an important factor here.
+
 				</figcaption>
 			</figure>
 
 			<figure>
 				<img src="figs/fig6_q1_corr_time.png" alt="Line chart showing Pearson correlation between corporate ownership and owner occupancy rates from 2004 to 2024">
 				<figcaption>
-					<strong>Figure 5 — The Corporate–Owner Occupancy Correlation Has Deepened Over Time (2004–2024).</strong>
-					Rather than a static relationship, the negative correlation between these two rates has strengthened over the full 20-year window, going from −0.80 in 2004 to −0.94 by 2023. This means that corporate-heavy neighborhoods are becoming more so, while owner-occupied neighborhoods are holding their character or losing ground more slowly. The COVID-19 onset (2020) does not visibly break the trend — the structural divergence was already well underway.
+					
+					I wanted to examine the correlation in figure 4 a bit more, so I decided to graph the correlation over time. The negative correlation between these two rates has remained consistently strong across the full 20-year window, hovering between −0.80 and −0.94 throughout. This stability suggests the tradeoff between corporate ownership and owner occupancy is a structural feature of Boston's housing market, not a recent phenomenon. The slight overall trend toward a stronger correlation, from −0.80 in 2004 to −0.88 in 2024, indicates the divide between corporate-heavy and owner-occupied neighborhoods has just slightly deepened over time. The COVID-19 onset (2020) doesn't visibly affect the trend.
 				</figcaption>
 			</figure>
 
 			<h3>Question 2: Who Bears the Burden of Corporate Expansion?</h3>
 
-			<p>Having established the structural tradeoff, the next question is whether corporate expansion has been spatially equitable — or whether it has concentrated in neighborhoods where residents of color are most present.</p>
+			<p>Now that we've established the structural tradeoff, the next question I want to examine is if corporate expansion has been spatially equitable or if it has concentrated in neighborhoods where residents of color are most present. We didn't see much of a trend in figure 4, but I was wondering if alternative analyses may reveal something different.</p>
 
 			<figure>
 				<img src="figs/fig7_q2_lines.png" alt="Line chart of corporate ownership rate for each neighborhood from 2004 to 2024, colored by percent non-white population">
 				<figcaption>
-					<strong>Figure 6 — Corporate Ownership Trends by Neighborhood (2004–2024), colored by % non-white population.</strong>
-					Every neighborhood saw corporate ownership rise, but growth was far from uniform. Counter-intuitively, the neighborhoods with the steepest absolute increases — South Boston Waterfront, Fenway, Charlestown — are not the most non-white (shown in green/yellow on the color scale). Meanwhile, the most heavily non-white neighborhoods like Roxbury, Mattapan, and Dorchester started at lower baselines and saw more moderate absolute growth. This suggests corporate investment is currently tracking gentrification pressure more than pre-existing minority concentration.
+					
+I used a line chart to see whether any race-related trend in corporate ownership emerged over time. Every neighborhood saw corporate ownership rise, but growth was far from uniform. Perhaps counter-intuitively, the neighborhoods with the steepest absolute increases (South Boston Waterfront, Fenway, Charlestown) aren't the most non-white (shown in green/yellow on the color scale). Meanwhile, the most heavily non-white neighborhoods like Roxbury, Mattapan, and Dorchester started at slightly lower baselines and saw more moderate absolute growth. This might suggest that corporate investment has followed gentrification pressure rather than pre-existing minority concentration, though that interpretation is just my speculation. I do want to note that because  the demographic data is held constant at the 2020 Census snapshot, we can't observe how neighborhood racial composition itself shifted over this period. Given the well-documented gentrification Boston has experienced since 2004, this is a meaningful limitation; neighborhoods that appear majority non-white in the Census may look quite different at the start or end of our window, which makes any race-based interpretation of these trends difficult to draw with confidence.
 				</figcaption>
 			</figure>
 
 			<figure>
 				<img src="figs/fig8_q2_change.png" alt="Horizontal bar chart of change in corporate ownership rate from 2004 to 2024 by neighborhood, colored by percent non-white">
 				<figcaption>
-					<strong>Figure 7 — Growth in Corporate Ownership 2004–2024 by Neighborhood, colored by % non-white population.</strong>
-					South Boston Waterfront (+32 pp), Fenway (+27 pp), and East Boston (+27 pp) top the list. East Boston stands out: it is the only majority-nonwhite neighborhood (63% non-white, predominantly Latinx) in the top tier of corporate growth, raising particular concerns about displacement risk. The overall correlation between corporate growth and % non-white is −0.52, suggesting corporate investment currently prefers whiter, gentrifying neighborhoods — but this may shift as those markets become saturated and capital seeks lower-cost entry points in majority-nonwhite areas.
-				</figcaption>
+					
+This representation shows a somewhat stronger racial trend than the line chart, which illustrates how choice of representation can surface different patterns in the same underlying data. South Boston Waterfront (+32 pp), Fenway (+27 pp), and East Boston (+27 pp) top the list. East Boston stands out as the only majority-nonwhite neighborhood (63% non-white, predominantly Latino) in the top tier of corporate growth, meaning it may face higher displacement risk than other nonwhite neighborhoods like Roxbury and Mattapan, where corporate growth has been slower. The overall correlation between corporate growth and % non-white is −0.52, suggesting corporate investment has so far preferred whiter, gentrifying neighborhoods, which could mean that majority-nonwhite areas face comparatively lower displacement risk from this mechanism at this moment in time. However, this could shift as those markets become saturated and capital seeks lower-cost entry points elsewhere. As with the previous figure, this interpretation is limited by the frozen 2020 demographics (neighborhoods that appear majority non-white in the Census may have looked quite different at the start of the period).				</figcaption>
 			</figure>
 
 			<figure>
@@ -173,6 +173,7 @@
 			</p>
 		</section>
 	</main>
+
 
 
 
