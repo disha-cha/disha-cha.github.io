@@ -1,1 +1,120 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<title>Vis & Society Assignment 3</title>
+	<link rel="stylesheet" href="https://vis-society.github.io/assignments/report.css" />
+</head>
 
+<body>
+	<header>
+		<h1>
+			<small>Assignment 3</small>
+			Visualization Critique & Redesign
+		</h1>
+
+		<p>
+			<strong>Your Name</strong> — <em>Your MIT Email Address</em>
+		</p>
+	</header>
+
+	<main>
+		<section>
+			<h2>Reading & Critique</h2>
+
+			<figure>
+				<img src="https://vis-society.github.io/assets/imgs/covid-spiral.png" alt="" />
+			</figure>
+
+			<p>
+				I think that the spiral chart is a genuinely creative choice and it stands out aesthetically. The use of a polar/radial layout elegantly shows the cyclical, seasonal nature of COVID-19 waves, making it visually intuitive that outbreaks occur around the same times of every year (particularly winter). The shaded red band representing the range of daily cases around the 7-day average adds a sense of variability without overwhelming the reader.
+			</p>
+
+			<p>
+				That said, the design definitely has meaningful weaknesses too. I think that the radial layout makes it somewhat difficult to compare case counts accurately across years, as it's hard to judge the thickness of a ribbon that curves at varying radii, and the fact that each year is drawn at a larger radius (purely for layout reasons, not to encode data) could mislead readers into thinking radial distance itself represents case magnitude (which is an issue that I actually had when I first saw the plot). The scale legend ("150K cases") is also ambiguous; because the band is drawn symmetrically around a centerline, it could be unclear whether 150K refers to the total width of the band or only the distance from the center to one edge, making it difficult to accurately map the legend onto the actual chart. Also, there are no gridlines for magnitude, so readers can't extract specific values, only relative to 150K, which still requires them to figure out the relative size themselves. Overall, the spiral form prioritizes aesthetics over legibility, and the central takeaway (that Omicron dwarfs prior waves) is maybe easy to glean, but not without confusion about scale that could maybe be removed in a more conventional layout.
+			</p>
+		</section>
+
+		<section>
+			<h2>Visualization Sketches</h2>
+
+			<figure>
+				<img src="sketch1_spiral.png"  />
+				<figcaption>
+					Sketch 1: Modified spiral with a one-sided band.
+				</figcaption>
+			</figure>
+
+			<p>
+				Design Rationale for Sketch 1:
+			</p>
+
+			<ul>
+				<li><strong>Motivation:</strong> I wanted to preserve the seasonal, cyclical feel of the original spiral while making case magnitude less ambiguous. By drawing the red band only on one side of the trajectory line, spikes in case counts also become more visually dramatic and the scale legend (now a clean triangle on one side) is easier to interpret.</li>
+				<li><strong>What works:</strong> The one-sided band makes sudden surges like Omicron feel more like "shocks," as the asymmetry draws the eye to peaks more effectively than a symmetric ribbon. The revised legend is also a clearer direct mapping of what the band represents.</li>
+				<li><strong>What doesn't work as well:</strong> The outward spiral still risks the reader misinterpreting that radial distance encodes magnitude, which was also one of the original's key weaknesses. Basically, readers may still conflate "bigger loop = more cases" with "wider band = more cases," creating the same confusion as before.</li>
+				<li>I want to explore how changing color (e.g. red vs. blue) might change the takeaway about severity. I also want to see if there's a layout that makes both month-level and year-level comparisons easier to do.</li>
+			</ul>
+
+			<figure>
+				<img src="sketch2_heatmap.png"  />
+				<figcaption>
+					Sketch 2: Heatmap grid (month × year).
+				</figcaption>
+			</figure>
+
+			<p>
+				Design Rationale for Sketch 2:
+			</p>
+
+			<ul>
+				<li><strong>Motivation:</strong> I wanted to make it easier to make year-over-year and month-over-month comparisons simultaneously by laying out months as rows and years as columns, with color intensity encoding case magnitude. This would directly address the spiral's inability to support accurate comparison between different time periods.</li>
+				<li><strong>What works:</strong> The grid structure helps the reader instantly compare, say, January 2021 vs. January 2022, or trace how a single year's cases evolved month by month. The "no data" hatching is also an easy way to handle missing 2022 data rather than implying zeros.</li>
+				<li><strong>What doesn't:</strong> Color intensity is also hard to read precisely, like the steps between 150K, 300K, and 450K are difficult to distinguish, especially in blue. The discrete monthly buckets also smooth over within-month surges, so a sharp spike mid-month gets averaged away and the "shock" quality of waves like Omicron is lost kind of. I also feel like the blue instead of red makes this visualization not stand out and doesn't inspire the urgency that the article probably wanted readers to feel.</li>
+				<li>I want to go back to a warm tone color scale since it tends to read more intuitively as "danger/intensity" for disease data, and consider whether more continuous rather than monthly buckets would recover some of that within-wave detail. I also want to try annotating events (e.g. "Omicron peak") to help the reader see the point.</li>
+			</ul>
+
+			<figure>
+				<img src="sketch3_overlapping.png"  />
+				<figcaption>
+					Sketch 3: Overlapping line chart with years on a shared Jan–Dec axis.
+				</figcaption>
+			</figure>
+
+			<p>
+				Design Rationale for Sketch 3:
+			</p>
+
+			<ul>
+				<li><strong>Motivation:</strong> I wanted to overlay the years on the same Jan–Dec axis to make seasonal comparisons direct and immediate. It allows the reader to see at a glance whether the same month was worse in one year versus another, without having to trace a spiral or scan a grid.</li>
+				<li><strong>What works:</strong> The shared x-axis makes month-level comparisons intuitive and precise. Labeling each line directly with the year (rather than using a separate legend) reduces cognitive load. The Omicron annotation helps, connecting the dramatic December 2021 and beyond spike to a specific real-world event gives the reader narrative context for why the line suddenly shoots up and what the article wants to take away. The increase in line thickness highlights which parts are after Omicron was discovered.</li>
+				<li><strong>What doesn't:</strong> The lines cross and overlap frequently, which creates some visual confusion in the mid-year months where cases were relatively low for both years (because the reds I chose weren't very different). It's also a little bit difficult to get the flow over time because of the year-by-year splicing. Also, the thicker line may not make it evident enough that we are trying to emphasize that the uptick in the 2022 line is also due to the Omicron variant.</li>
+				<li>Use more distinctly different shades so the years are immediately distinguishable. Perhaps do one line to best show the trend over time, but have delineators of years and where the Omicron variant was discovered. The year separations should be sufficient to be able to absorb temporal trends at a glance.</li>
+			</ul>
+		</section>
+
+		<section>
+			<h2>Final Visualization Design</h2>
+
+			<figure>
+				<img src="covid_final_clean.png"  />
+				<figcaption>
+					Final design: Continuous time-series line chart of 7-day average new confirmed U.S. COVID-19 cases, Mar 2020 – Jan 5, 2022.
+				</figcaption>
+			</figure>
+
+		</section>
+
+		<section>
+			<h2>Final Writeup</h2>
+
+			<p>
+				My final visualization uses a continuous time-series line chart of the 7-day rolling average of new confirmed U.S. COVID-19 cases from March 2020 through January 5, 2022, to show that the Omicron variant fundamentally shifted the scale of the pandemic in the United States. I chose a standard line chart with a linear y-axis because, after exploring spiral, heatmap, and overlapping-year layouts in my sketches, I concluded that a continuous temporal layout would most effectively preserve the "shock" quality of the Omicron surge (the near-vertical ascent in the final weeks is immediately legible as an anomaly relative to the entire prior trajectory of the pandemic). The line is colored in three discrete shades (light salmon for 2020, medium red for 2021, dark maroon for 2022), which reinforces the temporal progression and allows year-level grouping without the confusion of a separate legend or overlapping lines. I use a light pink background shading starting in late November 2021 (when the Omicron variant was identified) and a dashed vertical line at January 1, 2022 to anchor the annotations in time. The title, "Omicron Rewrote the Scale of U.S. COVID-19 Cases," functions as an editorial headline that helps tell the reader what conclusion to draw, while the subtitle provides the methodological context. I deliberately chose not to log-transform the y-axis or anything that would distort the values, because the linear scale is helpful to really show the scale of Omicron's impact.
+			</p>
+
+			<p>
+				The process of iterating through three sketch alternatives helped me identify several design issues that are difficult to resolve simultaneously. My critique of the original spiral chart centered on two problems: (1) the radial layout conflated layout distance with data magnitude, and (2) the symmetric ribbon made the scale legend ambiguous. My first sketch (one-sided spiral band) addressed the legend issue but not the radial confusion. My second sketch (month × year heatmap) solved the comparison problem but lost the temporal continuity and emotional impact by discretizing into monthly bins and using a subtler blue instead of red. My third sketch (overlapping year lines) enabled direct seasonal comparison but created some visual clutter where lines crossed and fragmented the overall narrative into year-long chunks, making it harder to feel the continuous trend. My final design resolves the original critique's core issues, where there is now no ambiguity about what encodes magnitude (the y-axis position is the sole quantitative scale), the scale is directly readable from gridlines, and the continuous layout preserves temporal flow. It doesn't have as easy seasonal comparison, but I added the year colors in order to get some of that aspect from the visualization. I thought this way of choosing which part to emphasize was ideal because the article's intended message is about Omicron's unprecedented scale, not about seasonality. The critique-by-redesign process ultimately taught me that every layout choice implicitly answers some questions while obscuring others, and that the designer's job is to ensure the layout best aligns with what the intended takeaway is, not to create a chart that answers every possible question equally well.
+			</p>
+		</section>
+	</main>
+</body>
+</html>
